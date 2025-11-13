@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../temas/tema_fondo.dart';
 import '../../temas/tipografia.dart';
-import '../../controlador/venta_controlador.dart';
+import '../../controlador/VentaController.dart';
 import '../moleculas/formulario_configuracion.dart';
 
 class ConfiguracionPagina extends StatefulWidget {
@@ -53,11 +53,6 @@ class _ConfiguracionPaginaState extends State<ConfiguracionPagina> {
                 Text(
                   'Cadena El Mandilón',
                   style: TipografiaApp.titulo,
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  'Configure la estructura de la cadena',
-                  style: TipografiaApp.subtitulo,
                 ),
                 const SizedBox(height: 30),
                 FormularioConfiguracion(

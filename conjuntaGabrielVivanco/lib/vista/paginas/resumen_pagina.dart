@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../temas/tema_fondo.dart';
 import '../../temas/tipografia.dart';
-import '../../controlador/venta_controlador.dart';
+import '../../controlador/VentaController.dart';
 import '../atomos/tarjeta_info.dart';
 
 class ResumenPagina extends StatelessWidget {
@@ -10,11 +10,20 @@ class ResumenPagina extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final VentaControlador controlador = ModalRoute.of(context)!.settings.arguments as VentaControlador;
-    final totales = controlador.obtenerResumen();
+    final modelo = controlador.obtenerModelo();
+    
+    if (modelo == null) {
+      return Scaffold(
+        appBar: AppBar(title: const Text('Error')),
+        body: const Center(child: Text('No hay datos disponibles')),
+      );
+    }
+    
+    controlador.calcularTotales();
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Resumen de Ventas'),
+        title: const Text('Resumen ventas'),
       ),
       body: Container(
         decoration: FondoApp.degradadoPrincipal,
@@ -24,27 +33,27 @@ class ResumenPagina extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                'Resumen Total',
+                'Total',
                 style: TipografiaApp.titulo,
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 20),
               
               TarjetaInfo(
-                titulo: 'Total Cadena',
-                valor: '\$${totales['totalCadena']?.toStringAsFixed(2) ?? "0.00"}',
+                titulo: 'Total de la cadena',
+                valor: '\$${modelo.totalCadena.toStringAsFixed(2)}',
                 color: Colors.green,
               ),
               
               const SizedBox(height: 20),
               Text(
-                'Ventas por Ciudad',
+                'Ventas por ciudad',
                 style: TipografiaApp.subtitulo,
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 10),
               
-              _construirCardCiudades(totales),
+              _construirCardCiudades(modelo),
             ],
           ),
         ),
@@ -52,9 +61,7 @@ class ResumenPagina extends StatelessWidget {
     );
   }
 
-  Widget _construirCardCiudades(Map<String, dynamic> totales) {
-    final ciudades = totales['ciudades'] as List<dynamic>? ?? [];
-    
+  Widget _construirCardCiudades(modelo) {
     return Card(
       elevation: 4,
       child: Padding(
@@ -62,9 +69,9 @@ class ResumenPagina extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            for (var ciudad in ciudades) ...[
+            for (int c = 0; c < modelo.numCiudades; c++) ...[
               Text(
-                ciudad['nombre'],
+                'Ciudad ${c + 1}',
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -72,19 +79,19 @@ class ResumenPagina extends StatelessWidget {
                 ),
               ),
               Text(
-                'Total: \$${ciudad['total'].toStringAsFixed(2)}',
+                'Total: \$${modelo.obtenerTotalCiudad(c).toStringAsFixed(2)}',
                 style: const TextStyle(fontSize: 16),
               ),
               const SizedBox(height: 8),
               
-              for (var tienda in ciudad['tiendas']) ...[
+              for (int t = 0; t < modelo.numTiendas; t++) ...[
                 Padding(
                   padding: const EdgeInsets.only(left: 16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Tienda ${tienda['numero']}',
+                        'Tienda ${t + 1}',
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
@@ -92,16 +99,16 @@ class ResumenPagina extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        'Total: \$${tienda['total'].toStringAsFixed(2)}',
+                        'Total: \$${modelo.obtenerTotalTienda(c, t).toStringAsFixed(2)}',
                         style: const TextStyle(fontSize: 14),
                       ),
                       const SizedBox(height: 4),
                       
-                      for (var empleado in tienda['empleados']) ...[
+                      for (int e = 0; e < modelo.numEmpleados; e++) ...[
                         Padding(
                           padding: const EdgeInsets.only(left: 16.0),
                           child: Text(
-                            '${empleado['nombre']}: \$${empleado['venta'].toStringAsFixed(2)}',
+                            'Empleado ${e + 1}: \$${modelo.obtenerVentaEmpleado(c, t, e).toStringAsFixed(2)}',
                             style: const TextStyle(fontSize: 13),
                           ),
                         ),

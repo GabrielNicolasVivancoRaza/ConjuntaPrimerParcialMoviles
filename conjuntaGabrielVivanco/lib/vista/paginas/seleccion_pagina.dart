@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../temas/tema_fondo.dart';
 import '../../temas/tipografia.dart';
-import '../../controlador/venta_controlador.dart';
+import '../../controlador/VentaController.dart';
 import '../atomos/selector_item.dart';
 import '../atomos/boton_principal.dart';
 

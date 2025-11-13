@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'temas/indice.dart';
-import 'vista/paginas/login_pagina.dart';
 import 'vista/paginas/configuracion_pagina.dart';
 import 'vista/paginas/seleccion_pagina.dart';
 import 'vista/paginas/registro_venta_pagina.dart';
@@ -22,7 +21,6 @@ class MiApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const ConfiguracionPagina(),
-        '/login': (context) => const LoginPagina(),
         '/seleccion': (context) => const SeleccionPagina(),
         '/registro': (context) => const RegistroVentaPagina(),
         '/resumen': (context) => const ResumenPagina(),

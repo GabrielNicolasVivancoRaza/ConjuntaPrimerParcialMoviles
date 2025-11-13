@@ -25,22 +25,22 @@ class FormularioConfiguracion extends StatelessWidget {
         child: Column(
           children: [
             CampoNumerico(
-              etiqueta: 'Número de Ciudades',
+              etiqueta: 'Numero de ciudades',
               controlador: ciudadesController,
             ),
             const SizedBox(height: 16),
             CampoNumerico(
-              etiqueta: 'Tiendas por Ciudad',
+              etiqueta: 'Tiendas por ciudad',
               controlador: tiendasController,
             ),
             const SizedBox(height: 16),
             CampoNumerico(
-              etiqueta: 'Empleados por Tienda',
+              etiqueta: 'Empleados por tienda',
               controlador: empleadosController,
             ),
             const SizedBox(height: 24),
             BotonPrincipal(
-              texto: 'Configurar Cadena',
+              texto: 'Configurar',
               onPressed: onConfigurar,
             ),
           ],

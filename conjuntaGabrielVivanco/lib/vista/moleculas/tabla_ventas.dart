@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../modelo/venta_modelo.dart';
+import '../../modelo/VentaModel.dart';
 
 class TablaVentas extends StatelessWidget {
   final VentaModelo modelo;

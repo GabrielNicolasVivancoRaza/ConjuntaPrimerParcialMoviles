@@ -1,4 +1,4 @@
-import '../modelo/venta_modelo.dart';
+import '../modelo/VentaModel.dart';
 
 class VentaControlador {
   VentaModelo? _modelo;
@@ -31,21 +31,21 @@ class VentaControlador {
 
   String registrarVenta(String sMonto, int ciudad, int tienda, int empleado) {
     if (_modelo == null) {
-      return 'Debe configurar la cadena primero';
+      return 'Complete los datos de la cafena';
     }
 
     if (sMonto.isEmpty) {
-      return 'Ingrese el monto de la venta';
+      return 'Ingrese el valor de la venta';
     }
 
     final monto = double.tryParse(sMonto);
 
     if (monto == null) {
-      return 'Ingrese un monto válido';
+      return 'Ingrese un valor valido';
     }
 
     if (monto <= 0) {
-      return 'El monto debe ser mayor a 0';
+      return 'Ingrese un valor mayor a 0';
     }
 
     _modelo!.registrarVenta(ciudad, tienda, empleado, monto);
@@ -56,31 +56,9 @@ class VentaControlador {
     return _modelo;
   }
 
-  Map<String, dynamic> obtenerResumen() {
-    if (_modelo == null) {
-      return {};
+  void calcularTotales() {
+    if (_modelo != null) {
+      _modelo!.acumularVentas();
     }
-
-    return {
-      'totalCadena': _modelo!.calcularTotalCadena(),
-      'ciudades': List.generate(_modelo!.numCiudades, (c) {
-        return {
-          'nombre': 'Ciudad ${c + 1}',
-          'total': _modelo!.calcularVentaCiudad(c),
-          'tiendas': List.generate(_modelo!.numTiendas, (t) {
-            return {
-              'numero': t + 1,
-              'total': _modelo!.calcularVentaTienda(c, t),
-              'empleados': List.generate(_modelo!.numEmpleados, (e) {
-                return {
-                  'nombre': 'Empleado ${e + 1}',
-                  'venta': _modelo!.obtenerVentaEmpleado(c, t, e),
-                };
-              }),
-            };
-          }),
-        };
-      }),
-    };
   }
 }
